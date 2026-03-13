@@ -1,0 +1,38 @@
+{
+  "name": "ideas-2-site",
+  "version": "1.0.0",
+  "description": "Turn any idea into a live website. Just send a Telegram message.",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+    "start": "node src/index.mjs",
+    "dev": "node --watch src/index.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "dotenv": "^16.4.5",
+    "grammy": "^1.28.0"
+  },
+  "optionalDependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "keywords": [
+    "telegram-bot",
+    "ai",
+    "website-builder",
+    "netlify",
+    "claude",
+    "anthropic",
+    "grammy",
+    "no-code"
+  ],
+  "author": "CJCPAs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/too4theshow/Ideas-2-Sites"
+  }
+}

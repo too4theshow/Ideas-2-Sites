@@ -1,0 +1,53 @@
+name: Run Ideas 2 Site Bot
+
+# ⚠️ NOTE: GitHub Actions isn't designed for long-running processes.
+# This workflow runs the bot for up to 5 hours (the Action timeout limit).
+# For production, use a VPS, Raspberry Pi, or GitHub Codespaces instead.
+#
+# SETUP:
+# Add these secrets in GitHub: Settings → Secrets and variables → Actions
+#   TELEGRAM_BOT_TOKEN
+#   ANTHROPIC_API_KEY
+#   NETLIFY_AUTH_TOKEN
+#   SUPABASE_URL (optional)
+#   SUPABASE_KEY (optional)
+
+on:
+  # Trigger manually from the Actions tab
+  workflow_dispatch:
+
+  # Automatically run on a schedule (runs every 4 hours, 6 times/day)
+  # Adjust or remove this as needed
+  schedule:
+    - cron: '0 */4 * * *'
+
+jobs:
+  run-bot:
+    name: Run Ideas 2 Site Bot
+    runs-on: ubuntu-latest
+    timeout-minutes: 350  # ~5.8 hours (GitHub Actions max is 6h)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SITE_PREFIX: ${{ vars.SITE_PREFIX || 'ideas2site' }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL || 'claude-sonnet-4-5' }}
+          MAX_SITES_PER_USER: ${{ vars.MAX_SITES_PER_USER || '10' }}
+        run: npm start
